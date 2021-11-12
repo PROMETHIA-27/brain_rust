@@ -11,7 +11,7 @@ macro_rules! brain_rust {
             let mut array = UnboundedArray::<u8>::new();
             let mut index = 0isize;
             
-            brain_rust_impl! { {$($toks)*} array index }
+            $crate::brain_rust_impl! { {$($toks)*} array index }
         }
     }
 }
@@ -21,51 +21,51 @@ macro_rules! brain_rust_impl {
     ({> $($rest:tt)*} $array:ident $index:ident) => {
         $index = $index.wrapping_add(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({< $($rest:tt)*} $array:ident $index:ident) => {
         $index = $index.wrapping_sub(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({>> $($rest:tt)*} $array:ident $index:ident) => {
         $index = $index.wrapping_add(2);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({<< $($rest:tt)*} $array:ident $index:ident) => {
         $index = $index.wrapping_sub(2);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({-> $($rest:tt)*} $array:ident $index:ident) => {
         $array[$index] = (*$array.index_mut($index)).wrapping_sub(1);
         $index = $index.wrapping_add(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({<- $($rest:tt)*} $array:ident $index:ident) => {
         $index = $index.wrapping_sub(1);
         $array[$index] = (*$array.index_mut($index)).wrapping_sub(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
     
     ({+ $($rest:tt)*} $array:ident $index:ident) => {
         $array[$index] = (*$array.index_mut($index)).wrapping_add(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
     
     ({- $($rest:tt)*} $array:ident $index:ident) => {
         $array[$index] = (*$array.index_mut($index)).wrapping_sub(1);
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
     
     ({, $($rest:tt)*} $array:ident $index:ident) => {
@@ -80,7 +80,7 @@ macro_rules! brain_rust_impl {
             }
         }
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
     
     ({. $($rest:tt)*} $array:ident $index:ident) => {
@@ -94,7 +94,7 @@ macro_rules! brain_rust_impl {
             let _ = std::io::stdout().flush();
         }
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
     
     ({[$($loop_contents:tt)*] $($rest:tt)*} $array:ident $index:ident) => {
@@ -102,11 +102,11 @@ macro_rules! brain_rust_impl {
             use std::ops::IndexMut;
 
             while (*$array.index_mut($index)) > 0 {
-                brain_rust_impl!({$($loop_contents)*} $array $index);
+                $crate::brain_rust_impl!({$($loop_contents)*} $array $index);
             }
         }
 
-        brain_rust_impl!({$($rest)*} $array $index)
+        $crate::brain_rust_impl!({$($rest)*} $array $index)
     };
 
     ({ } $array:ident $index:ident) => {
