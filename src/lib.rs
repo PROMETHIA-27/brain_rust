@@ -6,7 +6,7 @@ macro_rules! brain_rust {
     ($($toks:tt)*) => {
         #[allow(unused_mut, unused_imports)]
         {
-            use std::ops::IndexMut;
+            use {std::ops::IndexMut, brain_rust::UnboundedArray};
 
             let mut array = UnboundedArray::<u8>::new();
             let mut index = 0isize;
@@ -170,13 +170,6 @@ impl<T> std::ops::Index<isize> for UnboundedArray<T> {
     type Output = T;
 
     fn index(&self, _index: isize) -> &Self::Output {
-        // self.assert_capacity(index + (if index.is_negative() {-1} else {1}));
-        // let uindex: usize = index.abs().try_into().unwrap();
-        // if index < 0 {
-        //     &self.left[uindex]
-        // } else {
-        //     &self.right[uindex]
-        // }
         panic!("Non-mutable indexing is not allowed for unbounded array, as it may have to resize on indexing!");
     }
 }
